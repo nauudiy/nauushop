@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Produk</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <button onclick="location.href='admin-login.html'">Login Admin</button>
+        <button onclick="location.href='index.html'">Katalog Saya</button>
+    </header>
+    <main>
+        <h1>Edit Produk</h1>
+        <form id="edit-product-form" style="display: none;">
+            <input type="hidden" id="product-id">
+            <input type="file" id="product-image">
+            <input type="text" id="product-name" placeholder="Nama Produk" required>
+            <input type="number" id="product-price" placeholder="Harga" required>
+            <input type="text" id="product-variation" placeholder="Variasi" required>
+            <button type="submit">Update Produk</button>
+            <button type="button" id="delete-product">Hapus Produk</button>
+        </form>
+        <div id="login-message" style="display: none;">
+            <h2>Anda harus login terlebih dahulu</h2>
+            <button onclick="location.href='admin-login.html'">Login</button>
+        </div>
+    </main>
+    <script>
+        function checkLoginStatus() {
+            const loggedIn = localStorage.getItem('loggedIn');
+            if (loggedIn === 'true') {
+                document.getElementById('edit-product-form').style.display = 'block';
+                document.getElementById('login-message').style.display = 'none';
+                loadProductForEditing();
+            } else {
+                document.getElementById('edit-product-form').style.display = 'none';
+                document.getElementById('login-message').style.display = 'block';
+            }
+        }
+
+        function loadProductForEditing() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            const product = products[id];
+
+            if (product) {
+                document.getElementById('product-id').value = id;
+                document.getElementById('product-name').value = product.name;
+                document.getElementById('product-price').value = product.price;
+                document.getElementById('product-variation').value = product.variation;
+                // Set image preview
+                document.getElementById('product-image').value = product.image;
+            }
+        }
+
+        document.getElementById('edit-product-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const id = document.getElementById('product-id').value;
+            const name = document.getElementById('product-name').value;
+            const price = document.getElementById('product-price').value;
+            const image = URL.createObjectURL(document.getElementById('product-image').files[0]);
+            const variation = document.getElementById('product-variation').value;
+
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            if (products[id]) {
+                products[id] = { name, price, image, variation };
+                localStorage.setItem('products', JSON.stringify(products));
+                alert('Produk berhasil diperbarui');
+                location.href = 'index.html'; // Arahkan kembali ke halaman utama
+            }
+        });
+
+        document.getElementById('delete-product').addEventListener('click', () => {
+            const id = document.getElementById('product-id').value;
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            if (products[id]) {
+                products.splice(id, 1);
+                localStorage.setItem('products', JSON.stringify(products));
+                alert('Produk berhasil dihapus');
+                location.href = 'index.html'; // Arahkan kembali ke halaman utama
+            }
+        });
+
+        checkLoginStatus();
+    </script>
+</body>
+</html>

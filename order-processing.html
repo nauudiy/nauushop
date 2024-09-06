@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesanan Perlu Diproses</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <button onclick="location.href='index.html'">Home</button>
+    </header>
+    <main>
+        <h1>Pesanan Perlu Diproses</h1>
+        <div id="order-summary">
+            <!-- Ringkasan pesanan akan dimuat di sini menggunakan JavaScript -->
+        </div>
+    </main>
+    <script>
+        function loadOrderProcessing() {
+            const orderData = JSON.parse(localStorage.getItem('orderData'));
+
+            if (orderData) {
+                const orderSummary = document.getElementById('order-summary');
+                let total = 0;
+
+                orderSummary.innerHTML = `
+                    <h2>Nama: ${orderData.name}</h2>
+                    <p>Alamat: ${orderData.address}</p>
+                    <p>Nomor WA: ${orderData.phone}</p>
+                    <h3>Daftar Pesanan:</h3>
+                `;
+
+                orderData.items.forEach(item => {
+                    orderSummary.innerHTML += `
+                        <div class="order-item">
+                            <img src="${item.image}" alt="${item.name}">
+                            <h2>${item.name}</h2>
+                            <p>Harga: Rp${item.price}</p>
+                        </div>
+                    `;
+                    total += parseFloat(item.price);
+                });
+
+                orderSummary.innerHTML += `<p>Total: Rp${total.toFixed(2)}</p>`;
+
+                const waMessage = `Pesanan baru dari ${orderData.name} dengan total Rp${total.toFixed(2)}. \n\nAlamat: ${orderData.address} \nNomor WA: ${orderData.phone}`;
+                window.location.href = `https://wa.me/6283821014239?text=${encodeURIComponent(waMessage)}`;
+
+                localStorage.removeItem('orderData');
+            } else {
+                document.getElementById('order-summary').innerHTML = '<p>Belum ada pesanan</p>';
+            }
+        }
+
+        loadOrderProcessing();
+    </script>
+</body>
+</html>

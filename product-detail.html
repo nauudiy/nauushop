@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Produk</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <button onclick="location.href='index.html'">Home</button>
+        <button onclick="location.href='cart.html'">Keranjang</button>
+    </header>
+    <main>
+        <h1>Detail Produk</h1>
+        <div id="product-detail">
+            <!-- Detail produk akan dimuat di sini menggunakan JavaScript -->
+        </div>
+    </main>
+    <script>
+        function loadProductDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            const product = products[id];
+
+            if (product) {
+                document.getElementById('product-detail').innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h2>${product.name}</h2>
+                    <p>Harga: Rp${product.price}</p>
+                    <p>Variasi: ${product.variation}</p>
+                    <button onclick="addToCart(${id})">Masukkan ke Keranjang</button>
+                `;
+            }
+        }
+
+        function addToCart(id) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const product = products[id];
+            if (product) {
+                cart.push(product);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert('Produk berhasil ditambahkan ke keranjang');
+            }
+        }
+
+        loadProductDetail();
+    </script>
+</body>
+</html>

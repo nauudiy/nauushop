@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <button onclick="location.href='admin-login.html'">Login Admin</button>
+        <button onclick="location.href='index.html'">Katalog Saya</button>
+    </header>
+    <main>
+        <h1>Tambah Produk</h1>
+        <form id="add-product-form">
+            <input type="file" id="product-image" required>
+            <input type="text" id="product-name" placeholder="Nama Produk" required>
+            <input type="number" id="product-price" placeholder="Harga" required>
+            <input type="text" id="product-variation" placeholder="Variasi" required>
+            <button type="submit">Tambah Produk</button>
+        </form>
+    </main>
+    <script>
+        document.getElementById('add-product-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById('product-name').value;
+            const price = document.getElementById('product-price').value;
+            const image = URL.createObjectURL(document.getElementById('product-image').files[0]);
+            const variation = document.getElementById('product-variation').value;
+
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            products.push({ name, price, image, variation });
+            localStorage.setItem('products', JSON.stringify(products));
+
+            alert('Produk berhasil ditambahkan');
+        });
+    </script>
+</body>
+</html>
