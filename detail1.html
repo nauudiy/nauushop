@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Produk 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Detail Produk 1</h1>
+    
+    <div class="product-detail">
+        <img src="img/product1.jpg" alt="Produk 1">
+        <p>Rp. 100,000</p>
+        
+        <!-- Gambar pilihan variasi -->
+        <div class="variations">
+            <img src="img/varian1.jpg" alt="Varian 1" onclick="selectVariation('Varian 1', 'img/varian1.jpg')">
+            <img src="img/varian2.jpg" alt="Varian 2" onclick="selectVariation('Varian 2', 'img/varian2.jpg')">
+            <img src="img/varian3.jpg" alt="Varian 3" onclick="selectVariation('Varian 3', 'img/varian3.jpg')">
+        </div>
+
+        <button onclick="addToCart('Produk 1', 100000)">Tambahkan ke Keranjang</button>
+    </div>
+
+    <!-- Tombol ke halaman keranjang -->
+    <a href="cart.html" class="cart-btn">Keranjang</a>
+
+    <!-- Tombol kembali ke halaman utama -->
+    <a href="index.html" class="back-btn">Kembali</a>
+
+    <script src="cart.js"></script>
+</body>
+</html>
